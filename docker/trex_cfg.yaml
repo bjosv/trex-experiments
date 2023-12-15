@@ -1,0 +1,18 @@
+# ! TRex can not resolve domain names
+# Number of ports. Should be equal to the number of interfaces listed in "interfaces"
+# Configuration file /etc/trex_cfg.yaml should include even number of interfaces
+- port_limit: 2
+  version: 2
+  # Run TRex on low-end machines like weak laptops.
+  low_end: true
+  # ARPs/pings are redirected to Linux interfaces, that deal with them.
+  stack: linux_based
+  # Number of threads (cores) TRex will use per interface pair.
+  c: 8
+  # Use Linux interface
+  interfaces:
+    - eth0
+    - dummy
+  port_info:
+    - default_gw: 172.17.0.1
+      ip: 172.17.0.2
