@@ -1,0 +1,52 @@
+version: "3.8"
+services:
+  trex:
+    image: trex-dev:latest
+    build:
+      context: docker/
+      dockerfile: Dockerfile
+    container_name: "trex"
+    hostname: "trex"
+    stdin_open: true
+    tty: true
+    privileged: true
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    command: ["./t-rex-64", "-i", "-c", "1", "--cfg", "/etc/trex_cfg.yaml", "--software", "--emu"]
+    networks:
+      trex:
+        ipv4_address: 172.100.0.2
+
+  test:
+    image: trex-test:latest
+    build:
+      context: docker/
+      dockerfile: Dockerfile.test
+    container_name: "test"
+    hostname: "test"
+    depends_on:
+      - trex
+    stdin_open: true
+    tty: true
+    privileged: true
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    command:
+      - sh
+      - -c
+      - |
+        ip route add 16.0.0.0/8 via 172.100.0.2
+        exec sh
+    networks:
+      trex:
+        ipv4_address: 172.100.0.3
+
+networks:
+  trex:
+    ipam:
+      config:
+        - subnet: 172.100.0.0/16

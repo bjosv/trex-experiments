@@ -14,5 +14,6 @@
     - eth0
     - dummy
   port_info:
-    - default_gw: 172.17.0.1
-      ip: 172.17.0.2
+    - ip: 172.100.0.2
+      default_gw: 172.100.0.3
+

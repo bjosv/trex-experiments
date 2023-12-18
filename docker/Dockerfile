@@ -9,7 +9,7 @@ FROM golang:1.21-bookworm
 RUN apt-get update
 RUN apt-get install -y git gcc g++ zlib1g-dev \
     python-is-python3 python3.11-distutils python3-yaml \
-    sudo ethtool iproute2 net-tools
+    pciutils sudo ethtool iproute2 net-tools
 
 RUN mkdir /scratch
 WORKDIR /scratch
@@ -31,7 +31,7 @@ COPY trex_cfg.yaml /etc/trex_cfg.yaml
 
 ENV LD_LIBRARY_PATH=/scratch/trex-core/scripts/so/x86_64/
 
-WORKDIR /scratch/trex-core
+WORKDIR /scratch/trex-core/scripts
 
 CMD ["/bin/bash"]
 
